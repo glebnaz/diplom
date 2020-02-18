@@ -28,8 +28,12 @@ def transition_student_to_next_year(id):
     last_year = years.get(str(max_y))        
     group = last_year.get('группа')
     if int(group) in can_transition_group:
+        new_group=int(group)+100
+        new_year = {"группа":str(new_group),"руководитель":""}
+        years[str(max_y+1)] = new_year
+        students.find_one_and_update({"_id":id},{"$set":{"год":years}})
         print(group)
           
 
-for student in students.find():
+for student in students.find({"ФИО":"Наземнов Глеб Андреевич"}):
     transition_student_to_next_year(student['_id'])
